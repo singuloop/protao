@@ -69,10 +69,10 @@ git clone https://github.com/singuloop/protao.git ~/protao
 
 # 2. From your project root
 cd my-project
-~/protao/install.sh cursor      # → .cursor/rules/protao-*.md
-~/protao/install.sh kiro        # → .kiro/steering/protao-*.md
-~/protao/install.sh windsurf    # → .windsurf/rules/protao-*.md
-~/protao/install.sh claude-code # → .claude/skills/protao-*.md (alternative to npx)
+~/protao/install.sh cursor      # → .cursor/rules/protao.md
+~/protao/install.sh kiro        # → .kiro/steering/protao.md
+~/protao/install.sh windsurf    # → .windsurf/rules/protao.md
+~/protao/install.sh claude-code # → .claude/skills/protao/SKILL.md (alternative to npx)
 ```
 
 You can also pass an explicit target: `~/protao/install.sh cursor /path/to/project`

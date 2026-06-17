@@ -5,7 +5,7 @@
 #   tool:       claude-code | codex | cursor | kiro | windsurf
 #   target-dir: path to your project root (default: current directory)
 #
-# Tip: use "npx skills add <user>/protao" for a simpler one-command install.
+# Tip: use "npx skills add singuloop/protao --all" for the simplest install.
 #
 # Example (from your project):
 #   ~/protao/install.sh claude-code .
@@ -17,14 +17,14 @@ set -e
 TOOL="${1:-claude-code}"
 TARGET_DIR="${2:-$(pwd)}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SKILLS_DIR="$SCRIPT_DIR/skills"
+SRC="$SCRIPT_DIR/SKILL.md"
 
 case "$TOOL" in
-  claude-code) DEST="$TARGET_DIR/.claude/skills"    ; MODE=flat ;;
-  codex)       DEST="$TARGET_DIR/.codex/skills"     ; MODE=dir  ;;
-  cursor)      DEST="$TARGET_DIR/.cursor/rules"     ; MODE=flat ;;
-  kiro)        DEST="$TARGET_DIR/.kiro/steering"    ; MODE=flat ;;
-  windsurf)    DEST="$TARGET_DIR/.windsurf/rules"   ; MODE=flat ;;
+  claude-code) DEST="$TARGET_DIR/.claude/skills/protao" ; FILE=SKILL.md ;;
+  codex)       DEST="$TARGET_DIR/.codex/skills/protao"  ; FILE=SKILL.md ;;
+  cursor)      DEST="$TARGET_DIR/.cursor/rules"         ; FILE=protao.md ;;
+  kiro)        DEST="$TARGET_DIR/.kiro/steering"        ; FILE=protao.md ;;
+  windsurf)    DEST="$TARGET_DIR/.windsurf/rules"       ; FILE=protao.md ;;
   *)
     echo "Unknown tool: $TOOL"
     echo "Supported: claude-code | codex | cursor | kiro | windsurf"
@@ -33,19 +33,6 @@ case "$TOOL" in
 esac
 
 mkdir -p "$DEST"
+cp "$SRC" "$DEST/$FILE"
 
-for skill_dir in "$SKILLS_DIR"/*/; do
-  skill=$(basename "$skill_dir")
-  src="$skill_dir/SKILL.md"
-  [[ -f "$src" ]] || continue
-
-  if [[ "$MODE" == "dir" ]]; then
-    # Codex / vercel-labs/skills native format: <dest>/protao-<skill>/SKILL.md
-    mkdir -p "$DEST/protao-$skill"
-    cp "$src" "$DEST/protao-$skill/SKILL.md"
-  else
-    cp "$src" "$DEST/protao-$skill.md"
-  fi
-done
-
-echo "✓ Protao skills installed → $DEST"
+echo "✓ Protao installed → $DEST/$FILE"

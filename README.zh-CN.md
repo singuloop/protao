@@ -69,10 +69,10 @@ git clone https://github.com/singuloop/protao.git ~/protao
 
 # 2. 进入你的项目根目录
 cd my-project
-~/protao/install.sh cursor      # → .cursor/rules/protao-*.md
-~/protao/install.sh kiro        # → .kiro/steering/protao-*.md
-~/protao/install.sh windsurf    # → .windsurf/rules/protao-*.md
-~/protao/install.sh claude-code # → .claude/skills/protao-*.md（npx 的替代方式）
+~/protao/install.sh cursor      # → .cursor/rules/protao.md
+~/protao/install.sh kiro        # → .kiro/steering/protao.md
+~/protao/install.sh windsurf    # → .windsurf/rules/protao.md
+~/protao/install.sh claude-code # → .claude/skills/protao/SKILL.md（npx 的替代方式）
 ```
 
 也可以显式指定目标路径：`~/protao/install.sh cursor /path/to/project`

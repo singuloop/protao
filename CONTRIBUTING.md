@@ -30,17 +30,29 @@ What isn't accepted:
 
 ---
 
-## Skill file format
+## Structure: source vs. generated
 
-Each piece of Tao is a standalone `.md` file under `skills/`. The format:
+Protao ships as a **single skill** (`SKILL.md` at the repo root) so that `npx skills add` installs it as one coherent piece. But that file is **generated** — never edit it by hand.
+
+The editable source is `principles/*.md` — one file per lifecycle area (discovery, design, architecture, …). Each is a self-contained piece of Tao. To change content:
+
+1. Edit the relevant `principles/<area>.md`
+2. Run `./build-skill.sh` to regenerate the root `SKILL.md`
+3. Commit both
+
+This keeps a single source of truth (the `principles/` files) while shipping one combined skill.
+
+## Source file format
+
+Each `principles/<area>.md` follows this format:
 
 ```markdown
 ---
-name: protao-<topic>
-description: one line on the situation this skill covers
+name: protao-<area>
+description: one line on the situation this area covers
 ---
 
-# Title: one sentence summarizing this piece of Tao
+# Title: one sentence summarizing this area
 
 ## Core principle
 
@@ -50,14 +62,13 @@ State it clearly: in this situation, what is the most important judgment, and wh
 
 List the behaviors the agent should perform — what to ask, what to check, when to pause.
 
-## Red flags (signals to watch for)
+## Red flags
 
 - Signal one
 - Signal two
 ```
 
 Requirements:
-- `name`: `protao-` prefix + lowercase, hyphenated
 - Core principle: explain "why," not just "what"
 - Behaviors: instructions the agent can act on directly, not vague advice
 - Red flags: concrete signals the agent can recognize, not abstract warnings
@@ -66,9 +77,10 @@ Requirements:
 
 ## How to submit
 
-1. Add or modify a file under `skills/`
-2. Confirm it passes the "ten-times model" filter
-3. Open a PR with the title: `skill: <one sentence on what this Tao is>`
-4. In the PR description, explain what real situation this insight came from
+1. Edit or add a file under `principles/`
+2. Run `./build-skill.sh` to regenerate `SKILL.md`
+3. Confirm your change passes the "ten-times model" filter
+4. Open a PR with the title: `principles: <one sentence on what this Tao is>`
+5. In the PR description, explain what real situation this insight came from
 
 It doesn't need to be perfect. A rough judgment grounded in real experience is worth more than a polished principle with no source.
