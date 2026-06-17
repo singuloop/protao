@@ -1,0 +1,23 @@
+{
+  "name": "protao",
+  "version": "0.1.0",
+  "description": "Product development philosophy for the AI age — distilled judgments that survive model generations.",
+  "skills": [
+    { "id": "discovery",    "title": "Discovery",    "stage": "discovery" },
+    { "id": "design",       "title": "Design",       "stage": "design"    },
+    { "id": "simplicity",   "title": "Simplicity",   "stage": "cross-cutting" },
+    { "id": "architecture", "title": "Architecture", "stage": "development" },
+    { "id": "development",  "title": "Development",  "stage": "development" },
+    { "id": "ai-product",   "title": "AI Product",   "stage": "cross-cutting" },
+    { "id": "ai-generation","title": "AI Generation","stage": "cross-cutting" },
+    { "id": "testing",      "title": "Testing",      "stage": "testing"   },
+    { "id": "delivery",     "title": "Delivery",     "stage": "delivery"  }
+  ],
+  "tools": {
+    "claude-code": { "dest": ".claude/skills",   "mode": "flat", "ext": ".md" },
+    "codex":       { "dest": ".codex/skills",    "mode": "dir",  "filename": "SKILL.md" },
+    "cursor":      { "dest": ".cursor/rules",    "mode": "flat", "ext": ".md" },
+    "kiro":        { "dest": ".kiro/steering",   "mode": "flat", "ext": ".md" },
+    "windsurf":    { "dest": ".windsurf/rules",  "mode": "flat", "ext": ".md" }
+  }
+}

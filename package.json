@@ -1,0 +1,12 @@
+{
+  "name": "protao",
+  "version": "0.1.0",
+  "description": "Product development philosophy for the AI age — distilled judgments that survive model generations.",
+  "keywords": ["claude-skill", "ai-agent", "product-development", "skills"],
+  "license": "MIT",
+  "homepage": "https://github.com/singuloop/protao",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/singuloop/protao.git"
+  }
+}
