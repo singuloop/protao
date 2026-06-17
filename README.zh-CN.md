@@ -56,7 +56,7 @@ Protao 的第一性原理只有一句：
 ### 一条命令（推荐）
 
 ```bash
-npx skills add singuloop/protao
+npx skills add singuloop/protao --all
 ```
 
 使用 [vercel-labs/skills](https://github.com/vercel-labs/skills) 自动识别你的编码工具并安装所有 Protao skills。

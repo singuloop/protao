@@ -56,7 +56,7 @@ So what's recorded here is not "how to write a prompt," but "when you should and
 ### One command (recommended)
 
 ```bash
-npx skills add singuloop/protao
+npx skills add singuloop/protao --all
 ```
 
 This uses [vercel-labs/skills](https://github.com/vercel-labs/skills) to install all Protao skills into your detected coding agent automatically.
