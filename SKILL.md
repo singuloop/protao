@@ -230,6 +230,7 @@ When code needs a comment to explain *what* it does, the code should be renamed 
 
 ### Red flags (unnecessary complexity)
 - "Let's add a message queue / cache / abstraction layer just in case"
+- A dependency added for something the language or standard library already does, or added without a stated reason — it's permanent code you don't control
 - A module that has knowledge of many other modules
 - Naming that requires reading the implementation to understand
 - An abstraction layer that doesn't simplify the caller's code
@@ -328,6 +329,12 @@ This even outranks asking clarifying questions: a clarifying question built on a
 
 Watch for your own tells — "I think it's...", "it should be...", "as far as I recall...", "that probably doesn't exist yet." Each is a signal to stop and check, not to assert. The cost asymmetry is decisive: verifying takes seconds; building on a wrong assumption costs hours of rework.
 
+**Read and conform to the codebase before you write.**
+The fastest way to produce code that has to be rewritten is to write it before reading what's already there. Read the files you're about to touch, and copy the patterns that already exist — the error-handling shape, the naming, the way data flows. Don't introduce a second way to do something the codebase already does one way (a second HTTP client, a second date library, a parallel config system); consistency outranks your preferred idiom. When there's no pattern to follow, that's a question to ask, not a gap to fill with a plausible guess.
+
+**Make the diff as small as the task allows.**
+A change should touch what the task requires and nothing else. Don't fix unrelated things "while you're in there," don't restyle code you happened to open, and never bundle a reformat with a logic change — a formatter pass buries the three lines that matter inside three hundred that don't. The test is whether you can justify every changed line by the task; if a line changed only because you were passing through, revert it. Small diffs are what make review — human or model — actually possible.
+
 **Surface constraints before writing code.**
 Before starting, confirm:
 - Are there performance boundaries this must stay within?
@@ -365,6 +372,9 @@ Before implementing anything, confirm: what does "done" look like for this task?
 
 ### Red flags (boundary not held)
 - Accepting code without understanding what it does
+- Code written before reading the files and patterns it sits next to
+- A second way introduced to do something the codebase already does one way
+- A diff that reformats or refactors code the task didn't require, or a line kept because "I was in there anyway"
 - Adding dependencies without knowing their scope
 - "It works" without verifying it works for the right reasons
 - A specific product / version / API asserted from memory without verification
@@ -536,6 +546,12 @@ Before generating any test, ask:
 
 That answer is what needs to be tested. Start there.
 
+**When something breaks, reproduce it before you change anything.**
+Investigate, don't guess: read the whole error and stack trace, reproduce the failure, and change one thing at a time. When you fix a bug, write the test that fails because of it *first*, and watch it fail — that failure is the only proof you found the actual cause and not just something near it. Then fix, and watch it pass. Skipping this is how you "fix" a symptom while the real bug moves somewhere quieter: papering over an unexpected null with a null check never answers why it was null. Test behavior that can actually break, not that a constructor sets a field.
+
+**Hard to test is a fact about the design, not permission to skip.**
+When something is difficult to test, that difficulty is information: usually the code is doing too much, its dependencies are tangled, or its intent isn't separable from its wiring. The response is to treat it as a design signal — simplify, decouple, clarify — not to conclude the thing can't be tested and move on.
+
 **For visual outputs: render, don't just parse.**
 String-level checks on HTML or generated content are not sufficient. If the product's output is visual — a page, a report, a generated layout — the test input must be a screenshot of the rendered result, not the source string.
 
@@ -575,6 +591,8 @@ Both matter. Intent tests must exist.
 
 ### Red flags (intent not tested)
 - Test suite passes but no one can explain what breaks if requirements change
+- A bug fixed without a test that fails before the fix and passes after
+- A symptom papered over (a null check, a try/catch) without finding why it happened
 - Tests written after the code, shaped to match what already exists
 - Coverage metrics used as a proxy for test quality
 - Visual output validated only by string matching
@@ -628,6 +646,48 @@ Shipping something imperfect that users can act on is often more valuable than a
 - Optimizing details before the core is validated with real users
 - User feedback captured only in chat, not in any persistent artifact
 - Edge states and error paths never reviewed before shipping
+
+---
+
+
+## Evolution: Shipping is the middle, not the end
+
+When helping change, extend, or maintain a product that is already live, apply these principles:
+
+### Core principle
+A shipped product is a living commitment, not a finished artifact. Most of its life happens after v1. AI makes every change cheap, and that quietly inverts the risk: the scarce judgment is no longer "can we build this change" but "should this change, and what must survive it." Cheap execution makes churn easy; only human judgment decides what is worth disturbing.
+
+### Behaviors to enforce
+
+**Cheap change raises the bar on "why," it does not lower it.**
+When AI can rewrite a module in minutes, the temptation is to keep churning because you can. But every change has a cost the model never sees: users relearn, habits break, and each edit is a fresh chance to regress. Before making a change, ask what it's worth to the user — not whether it's easy to do. "Easy to change" is not a reason to change.
+
+**Separate what users depend on from what is merely incidental.**
+A live product accumulates things people rely on: URLs, saved data, keyboard habits, integration contracts, the shape of an output they've built a workflow around. These are commitments, even when they were never written down. Incidental details — internal structure, wording, layout — can move freely. Before changing anything user-facing, ask: is this something someone out there has already built on? Preserve the contract; evolve the expression.
+
+**Patch vs. rewrite is a judgment, not a reflex.**
+AI makes "just rewrite it" the cheap default, but a rewrite silently discards the accumulated edge-case knowledge baked into the current code — the quiet fixes for cases no one remembers anymore. Rewrite when the underlying model is wrong; patch when the model is right and only the code is messy. Prefer the patch unless you can name what's fundamentally wrong with the existing design.
+
+**Treat existing behavior as a spec before you change it.**
+Regression is the default failure mode of cheap edits: AI changes code without knowing which current behaviors were load-bearing. The bug you fix and the feature you break can be the same edit. Before changing anything with users, capture what must still hold afterward — then verify it still holds. The old behavior is an unwritten spec until proven otherwise.
+
+**Retiring is a first-class activity, not an afterthought.**
+AI adds faster than anyone removes. Features, options, flags, and code paths pile up, and each one is weight the next change has to carry. Deciding what to remove is as much a part of evolution as deciding what to add. A product that only ever grows is a product decaying in slow motion.
+
+**Finish the change — two live paths is how systems rot.**
+Cheap migration makes it easy to add the new path and leave the old one running "just in case." Two live paths for the same job is not safety; it's ambiguity that compounds. Finish it: route new work to the new path and retire the old one, or mark explicitly which is the mainline and which is the fallback, and why.
+
+**You own what you change, even if you didn't write it.**
+Changing code that AI wrote — or that a past version of you wrote — does not transfer responsibility for what it breaks. "I only touched one line" is not a defense when that line was load-bearing. The person making the change owns its consequences.
+
+### Red flags (evolution mishandled)
+- Changing something because it's easy, not because it's worth it
+- A user-facing contract (URL, data shape, saved state, integration) broken without anyone noticing it was a contract
+- Reaching for a rewrite when a patch would do, discarding edge-case knowledge in the process
+- A change shipped without capturing which existing behaviors had to keep working
+- Features and flags only ever added, never retired
+- A migration that leaves two live paths with no declared mainline
+- "AI wrote it" or "I only changed one line" used to dodge responsibility for a regression
 
 ---
 

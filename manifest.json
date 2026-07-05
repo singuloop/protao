@@ -1,6 +1,6 @@
 {
   "name": "protao",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Product development philosophy for the AI age — distilled judgments that survive model generations.",
   "keywords": ["claude-skill", "ai-agent", "product-development", "skills"],
   "license": "MIT",
@@ -19,7 +19,8 @@
     { "id": "ai-product",   "title": "AI Product",   "stage": "cross-cutting" },
     { "id": "ai-generation","title": "AI Generation","stage": "cross-cutting" },
     { "id": "testing",      "title": "Testing",      "stage": "testing" },
-    { "id": "delivery",     "title": "Delivery",     "stage": "delivery" }
+    { "id": "delivery",     "title": "Delivery",     "stage": "delivery" },
+    { "id": "evolution",    "title": "Evolution",    "stage": "evolution" }
   ],
   "source": "principles/",
   "tools": {

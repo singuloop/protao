@@ -18,6 +18,12 @@ Before generating any test, ask:
 
 That answer is what needs to be tested. Start there.
 
+**When something breaks, reproduce it before you change anything.**
+Investigate, don't guess: read the whole error and stack trace, reproduce the failure, and change one thing at a time. When you fix a bug, write the test that fails because of it *first*, and watch it fail — that failure is the only proof you found the actual cause and not just something near it. Then fix, and watch it pass. Skipping this is how you "fix" a symptom while the real bug moves somewhere quieter: papering over an unexpected null with a null check never answers why it was null. Test behavior that can actually break, not that a constructor sets a field.
+
+**Hard to test is a fact about the design, not permission to skip.**
+When something is difficult to test, that difficulty is information: usually the code is doing too much, its dependencies are tangled, or its intent isn't separable from its wiring. The response is to treat it as a design signal — simplify, decouple, clarify — not to conclude the thing can't be tested and move on.
+
 **For visual outputs: render, don't just parse.**
 String-level checks on HTML or generated content are not sufficient. If the product's output is visual — a page, a report, a generated layout — the test input must be a screenshot of the rendered result, not the source string.
 
@@ -57,6 +63,8 @@ Both matter. Intent tests must exist.
 
 ## Red flags (intent not tested)
 - Test suite passes but no one can explain what breaks if requirements change
+- A bug fixed without a test that fails before the fix and passes after
+- A symptom papered over (a null check, a try/catch) without finding why it happened
 - Tests written after the code, shaped to match what already exists
 - Coverage metrics used as a proxy for test quality
 - Visual output validated only by string matching

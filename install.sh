@@ -5,7 +5,7 @@
 #   tool:       claude-code | codex | cursor | kiro | windsurf
 #   target-dir: path to your project root (default: current directory)
 #
-# Tip: use "npx skills add singuloop/protao --all" for the simplest install.
+# Tip: use "npx skills add singuloop/protao" for the simplest install.
 #
 # Example (from your project):
 #   ~/protao/install.sh claude-code .

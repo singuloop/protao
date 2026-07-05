@@ -42,6 +42,7 @@ When code needs a comment to explain *what* it does, the code should be renamed 
 
 ## Red flags (unnecessary complexity)
 - "Let's add a message queue / cache / abstraction layer just in case"
+- A dependency added for something the language or standard library already does, or added without a stated reason — it's permanent code you don't control
 - A module that has knowledge of many other modules
 - Naming that requires reading the implementation to understand
 - An abstraction layer that doesn't simplify the caller's code

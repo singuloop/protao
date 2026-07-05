@@ -9,7 +9,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 # Order matters: lifecycle stages, then cross-cutting
-ORDER="discovery design simplicity architecture development ai-product ai-generation testing delivery"
+ORDER="discovery design simplicity architecture development ai-product ai-generation testing delivery evolution"
 
 cat > SKILL.md <<'HEADER'
 ---

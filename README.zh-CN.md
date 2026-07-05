@@ -59,9 +59,9 @@ Protao 的第一性原理只有一句：
 npx skills add singuloop/protao
 ```
 
-使用 [vercel-labs/skills](https://github.com/vercel-labs/skills) 自动识别你的编码工具并安装所有 Protao skills。
+使用 [vercel-labs/skills](https://github.com/vercel-labs/skills) 自动识别你的编码工具并安装 Protao skill。
 
-### 手动安装（适用于 Cursor / Kiro / Windsurf）
+### 手动安装（适用于 Cursor / Kiro / Windsurf / Codex）
 
 ```bash
 # 1. 克隆 protao（一次）
@@ -72,12 +72,26 @@ cd my-project
 ~/protao/install.sh cursor      # → .cursor/rules/protao.md
 ~/protao/install.sh kiro        # → .kiro/steering/protao.md
 ~/protao/install.sh windsurf    # → .windsurf/rules/protao.md
+~/protao/install.sh codex       # → .codex/skills/protao/SKILL.md
 ~/protao/install.sh claude-code # → .claude/skills/protao/SKILL.md（npx 的替代方式）
 ```
 
 也可以显式指定目标路径：`~/protao/install.sh cursor /path/to/project`
 
 安装完成后，agent 会在产品开发的各个环节自动遵循这套原则。完整的 skill 列表见下方[Skills 一览](#skills-一览)。
+
+### 更新到最新版本
+
+Protao 会持续演进。原则更新后，这样拉取最新版：
+
+```bash
+# 如果你用 npx 安装（skill 是软链接）：
+npx skills update protao        # 别名 upgrade；-g 仅全局，-p 仅项目
+
+# 如果你用 install.sh 手动安装（文件是拷贝的）：
+git -C ~/protao pull
+~/protao/install.sh <tool>      # 对同一个 tool 重跑一次以覆盖
+```
 
 ### 验证是否生效
 
@@ -167,6 +181,18 @@ AI 可以无限迭代。它永远能把东西做得再好一点、再完整一�
 
 ---
 
+### 演进：上线是中点，不是终点
+
+已上线的产品是一个持续的承诺，不是一件完工的作品。它的大部分生命，都发生在 v1 之后。而 AI 让每一次改动都变廉价——这悄悄地把风险倒了个个儿。
+
+演进阶段的道：
+
+> 当执行变得免费，稀缺的判断不再是「我们能不能改」，而是「该不该改——以及改动之后，什么必须活下来」。
+
+廉价的改动让"折腾"变容易、让"重写"变成默认、让"回归"成为每次编辑的常驻风险。什么该保留、什么该退役、什么时候打补丁而不是重写——这些判断模型替你做不了，因为它看不见用户已经在什么之上搭好了东西。
+
+---
+
 ## 贯穿性的「道」
 
 有些判断不属于某个单独阶段，而是贯穿全流程——尤其是当产品本身建立在 AI 之上时。
@@ -204,6 +230,7 @@ AI 可以无限迭代。它永远能把东西做得再好一点、再完整一�
 | `ai-generation` | AI 生成：分阶段流水线、prompt 即资产、安全沙箱 |
 | `testing` | 测试：验证意图、真实渲染、可重复的上线流程 |
 | `delivery` | 交付：定义完成、边角质量、反馈归档 |
+| `evolution` | 演进：提高「为何要改」的门槛、保住用户依赖的契约、打补丁 vs 重写、主动做减法 |
 
 ---
 

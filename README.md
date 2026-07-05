@@ -59,9 +59,9 @@ So what's recorded here is not "how to write a prompt," but "when you should and
 npx skills add singuloop/protao
 ```
 
-This uses [vercel-labs/skills](https://github.com/vercel-labs/skills) to install all Protao skills into your detected coding agent automatically.
+This uses [vercel-labs/skills](https://github.com/vercel-labs/skills) to install the Protao skill into your detected coding agent automatically.
 
-### Manual install (for Cursor / Kiro / Windsurf)
+### Manual install (for Cursor / Kiro / Windsurf / Codex)
 
 ```bash
 # 1. Clone protao once
@@ -72,12 +72,26 @@ cd my-project
 ~/protao/install.sh cursor      # → .cursor/rules/protao.md
 ~/protao/install.sh kiro        # → .kiro/steering/protao.md
 ~/protao/install.sh windsurf    # → .windsurf/rules/protao.md
+~/protao/install.sh codex       # → .codex/skills/protao/SKILL.md
 ~/protao/install.sh claude-code # → .claude/skills/protao/SKILL.md (alternative to npx)
 ```
 
 You can also pass an explicit target: `~/protao/install.sh cursor /path/to/project`
 
 After installation, your agent will follow these principles across every stage of product development. See the full list below in [Skills overview](#skills-overview).
+
+### Update to the latest version
+
+Protao evolves. To pull the latest principles after they're updated:
+
+```bash
+# If you installed via npx (skills are symlinked):
+npx skills update protao        # alias: upgrade; -g global only, -p project only
+
+# If you installed manually via install.sh (files were copied):
+git -C ~/protao pull
+~/protao/install.sh <tool>      # re-run for the same tool to overwrite
+```
 
 ### Verify it's working
 
@@ -167,6 +181,18 @@ This judgment — "this is enough" — is something no AI can make for you. Beca
 
 ---
 
+### Evolution: Shipping is the middle, not the end
+
+A shipped product is a living commitment, not a finished artifact. Most of its life happens after v1. And AI makes every change cheap — which quietly inverts the risk.
+
+The Tao of evolution:
+
+> When execution is free, the scarce judgment is no longer "can we change this," but "should we — and what must survive the change?"
+
+Cheap change makes churn easy: rewriting becomes the default, and regression the standing risk of every edit. What to preserve, what to retire, when to patch instead of rewrite — these are judgments the model won't make for you, because it can't see what users have already built on.
+
+---
+
 ## The cross-cutting Tao
 
 Some judgments don't belong to a single stage — they run through the whole lifecycle, especially when the product itself is built on AI.
@@ -204,6 +230,7 @@ After installation, your agent gains these principle constraints in the relevant
 | `ai-generation` | AI generation: phased pipelines, prompt as asset, security sandboxing |
 | `testing` | Testing: verify intent, render for real, a repeatable ship process |
 | `delivery` | Delivery: define done, edge-case quality, archive feedback |
+| `evolution` | Evolution: raise the bar on why to change, preserve what users depend on, patch vs rewrite, prune deliberately |
 
 ---
 

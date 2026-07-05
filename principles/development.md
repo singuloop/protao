@@ -21,6 +21,12 @@ This even outranks asking clarifying questions: a clarifying question built on a
 
 Watch for your own tells — "I think it's...", "it should be...", "as far as I recall...", "that probably doesn't exist yet." Each is a signal to stop and check, not to assert. The cost asymmetry is decisive: verifying takes seconds; building on a wrong assumption costs hours of rework.
 
+**Read and conform to the codebase before you write.**
+The fastest way to produce code that has to be rewritten is to write it before reading what's already there. Read the files you're about to touch, and copy the patterns that already exist — the error-handling shape, the naming, the way data flows. Don't introduce a second way to do something the codebase already does one way (a second HTTP client, a second date library, a parallel config system); consistency outranks your preferred idiom. When there's no pattern to follow, that's a question to ask, not a gap to fill with a plausible guess.
+
+**Make the diff as small as the task allows.**
+A change should touch what the task requires and nothing else. Don't fix unrelated things "while you're in there," don't restyle code you happened to open, and never bundle a reformat with a logic change — a formatter pass buries the three lines that matter inside three hundred that don't. The test is whether you can justify every changed line by the task; if a line changed only because you were passing through, revert it. Small diffs are what make review — human or model — actually possible.
+
 **Surface constraints before writing code.**
 Before starting, confirm:
 - Are there performance boundaries this must stay within?
@@ -58,6 +64,9 @@ Before implementing anything, confirm: what does "done" look like for this task?
 
 ## Red flags (boundary not held)
 - Accepting code without understanding what it does
+- Code written before reading the files and patterns it sits next to
+- A second way introduced to do something the codebase already does one way
+- A diff that reformats or refactors code the task didn't require, or a line kept because "I was in there anyway"
 - Adding dependencies without knowing their scope
 - "It works" without verifying it works for the right reasons
 - A specific product / version / API asserted from memory without verification
